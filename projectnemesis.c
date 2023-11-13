@@ -5,11 +5,11 @@
 
 #include <stdio.h>
 
-//constant values
+//  CONSTANT VALUES
 #define LABORCOST 0.35
 #define TAXRATE 0.085
 
-//user function declarations
+//  User-defined function declarations
 void getInputMeasurements();
 int totalArea(int length, int width);
 float carpetCost(float area, float carpetPricePSF);
@@ -24,17 +24,20 @@ void chargesOutput(float total, float carpetPricePSF, float carpet, float labor,
 
 int main ()
 {
-//local declarations
-
+    // Function call to get input measurements from the user
     getInputMeasurements();
 
     return 0;
 }
+
+    //  This function is where we get our user input values
 void getInputMeasurements()
 {
+    //  Local variable declarations
     int length, width, inputDiscount;
     float area, carpet, labor, installPrice, discount, subTotal, tax, total, carpetPricePSF;
 
+    //  Prompt the user to input value
     printf("Length of room (feet)? ");
     scanf("%d", &length);
     printf("Width of room (feet)? ");
@@ -44,6 +47,8 @@ void getInputMeasurements()
     printf("Cost per square foot (xxx.xx)? ");
     scanf("%f", &carpetPricePSF);
 
+
+    //  Calculating various values based on the input measurements inputted by the user
     area = totalArea(length, width);
     carpet = carpetCost(area, carpetPricePSF);
     labor = laborCost(area);
@@ -53,51 +58,53 @@ void getInputMeasurements()
     tax = taxValue(subTotal);
     total = totalPrice(subTotal, tax);
 
+    // calling the 2 void output function within the function (recursion)
     measurementOutput(length, width, area);
     chargesOutput(total, carpetPricePSF, carpet, labor, installPrice, inputDiscount, subTotal, discount, tax);
 }
 
 //user-defined functions definitions
-int totalArea(int length, int width)
+
+int totalArea(int length, int width) //  Function to calculate total area
 {
     return length * width;
 }
-float carpetCost(float area, float carpetPricePSF)
+float carpetCost(float area, float carpetPricePSF) //   Function to calculate total carpet cost
 {
     return area * carpetPricePSF;
 }
-float laborCost(float area)
+float laborCost(float area) // Function to calculate the total labor cost
 {
     return area * LABORCOST;
 }
-float installedPrice(float carpet, float labor)
+float installedPrice(float carpet, float labor) // Function to calculate the total installed price by adding the carpet and labor
 {
     return carpet + labor;
 }
-float discountValue(float installPrice, int inputDiscount)
+float discountValue(float installPrice, int inputDiscount) //   Function to calculate the total discount value for the customer
 {
     return (inputDiscount / 100.0) * installPrice;
 }
-float subtotalPrice(float subTotal, float discount)
+float subtotalPrice(float subTotal, float discount) //  Function to calculate subtotal price
 {
     return subTotal - discount;
 }
-float taxValue(float subTotal)
+float taxValue(float subTotal) //   Function to calculate the tax value
 {
     return subTotal * TAXRATE;
 }
-float totalPrice(float subTotal, float tax)
+float totalPrice(float subTotal, float tax) //  Function to calculate the overall/total price
 {
     return subTotal + tax;
 }
-void measurementOutput(int length, int width, float area)
+void measurementOutput(int length, int width, float area)   //  Functiton for measurement output
 {
     printf("\n\n\t\tMEASUREMENT\t\t");
     printf("\n\nLength\t\t\t\t\t%d ft\n", length);
     printf("Width\t\t\t\t\t%d ft\n", width);
     printf("Area\t\t\t\t\t%.2f square ft\n\n", area);
 }
-void chargesOutput(float total, float carpetPricePSF, float carpet, float labor, float installPrice, int inputDiscount, float subTotal, float discount, float tax)
+void chargesOutput(float total, float carpetPricePSF, float carpet, float labor, float installPrice, int inputDiscount, float subTotal, float discount, float tax) //   Function for charges outpu
 {
     printf("\t\tCHARGES\t\t\n\n");
     printf("DESCRIPTION\t\tCOST/SQ.FT.\tCHARGE\n");
