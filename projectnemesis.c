@@ -92,7 +92,7 @@ float totalPrice(float subTotal, float tax)
 }
 void measurementOutput(int length, int width, float area)
 {
-    printf("\t\tMEASUREMENT\t\t");
+    printf("\n\n\t\tMEASUREMENT\t\t");
     printf("\n\nLength\t\t\t\t\t%d ft\n", length);
     printf("Width\t\t\t\t\t%d ft\n", width);
     printf("Area\t\t\t\t\t%.2f square ft\n\n", area);
@@ -110,5 +110,5 @@ void chargesOutput(float total, float carpetPricePSF, float carpet, float labor,
     printf("\t\t\t\t\t----------\n");
     printf("SUBTOTAL\t\t\t\t$%.2f\n", subTotal);
     printf("Tax\t\t\t\t\t%.2f\n", tax);
-    printf("TOTAL\t\t\t\t\t$%.2f\n", total);
+    printf("TOTAL\t\t\t\t\t$%.2f\n\n", total);
 }
