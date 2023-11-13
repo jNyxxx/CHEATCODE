@@ -35,13 +35,13 @@ void getInputMeasurements()
     int length, width, inputDiscount;
     float area, carpet, labor, installPrice, discount, subTotal, tax, total, carpetPricePSF;
 
-    printf("Enter the length of the carpet in feet: ");
+    printf("Length of room (feet)? ");
     scanf("%d", &length);
-    printf("Enter the width of the carpet in feet: ");
+    printf("Width of room (feet)? ");
     scanf("%d", &width);
-    printf("Enter the discount percentage for the customer: ");
+    printf("Customer discount (percent)? ");
     scanf("%d", &inputDiscount);
-    printf("Enter the carpet price per square foot: ");
+    printf("Cost per square foot (xxx.xx)? ");
     scanf("%f", &carpetPricePSF);
 
     area = totalArea(length, width);
