@@ -1,16 +1,25 @@
-#include <stdio.h>
+/* This program calculates the parking fee depending on the time spent parked.
+    Written by: Baran, Junex Glenn A.
+    Date: 11/24/23
+*/
 
+#include <stdio.h>
+    //  User-defined function declarations
 void inputVehicleHour(char *typeOfVehicle, int *hrEnt, int *minEnt, int *hrLeft, int *minLeft);
 void computeTime(int enterHr, int enterMin, int exitHr, int exitMin, int *parkingHr, int *parkingMin);
 int roundedHr(int parkHr, int parkMin);
 double timeCharge(char vehicleType, int timeRounded);
 void displayParkingCharge(char vehicleType, int enterHr, int enterMin, int exitHr, int exitMin, int parkingHr, int parkingMin, int timeRounded, double total);
 
+
+        //  Main function
 int main() {
+        //  Local Declarations
     char vehicleType;
     int hourEnter, minuteEnter, hourLeft, minuteLeft, parkingMin, parkingHr, timeRounded;
     double total;
 
+        //  Function Calling
     inputVehicleHour(&vehicleType, &hourEnter, &minuteEnter, &hourLeft, &minuteLeft);
     computeTime(hourEnter, minuteEnter, hourLeft, minuteLeft, &parkingHr, &parkingMin);
     timeRounded = roundedHr(parkingHr, parkingMin);
@@ -20,8 +29,9 @@ int main() {
     return 0;
 }
 
+        //  This function prompts the user to input and returns it to the main function.
 void inputVehicleHour(char *typeOfVehicle, int *hrEnt, int *minEnt, int *hrLeft, int *minLeft) {
-    printf("Type of vehicle? (C for car, B for bus, T for truck):\t");
+    printf("Type of vehicle? (C/c for car, B/b for bus, T/t for truck):\t");
     scanf(" %c", typeOfVehicle);
     printf("Hour vehicle entered lot (0 - 24)\t");
     scanf("%d", hrEnt);
@@ -33,6 +43,7 @@ void inputVehicleHour(char *typeOfVehicle, int *hrEnt, int *minEnt, int *hrLeft,
     scanf("%d", minLeft);
 }
 
+        //  This function computes the time vehicle entered and the time the vehicle exited the parking lot
 void computeTime(int enterHr, int enterMin, int exitHr, int exitMin, int *parkingHr, int *parkingMin) {
     if (exitMin < enterMin) 
     {
@@ -45,44 +56,48 @@ void computeTime(int enterHr, int enterMin, int exitHr, int exitMin, int *parkin
 
 }
 
+        //  This function rounds off the parking time.
 int roundedHr(int parkHr, int parkMin) {
     if (parkMin > 0) 
     {
-        return parkHr + 1;
+        return parkHr += 1;
     } 
     else 
     {
-        return parkHr;
+        return parkHr ;
     }
 }
-
+        // Function to calculate the parking fee based on the vehicle type and rounded time
 double timeCharge(char vehicleType, int timeRounded) {
     switch (vehicleType) {
         case 'C':
-            if (timeRounded < 3) 
+        case 'c':
+            if (timeRounded <= 3)  // First 3 hours are free
             {
                 return 0;
             } else 
             {
-                return timeRounded * 1.5;
+                return (timeRounded - 3) * 1.5;
             }
             break;
 
         case 'B':
-            if (timeRounded < 1) 
+        case 'b':
+            if (timeRounded <= 1)
             {
                 return timeRounded * 2;
             } else {
-                return timeRounded * 3.7;
+                return 2 + (timeRounded - 1) * 3.7;  // $2 for the first hour, $3.70 for each additional hour
             }
             break;
 
         case 'T':
-            if (timeRounded < 2) 
+        case 't':
+            if (timeRounded <= 2)
             {
                 return timeRounded * 1;
             } else {
-                return timeRounded * 2.3;
+                return 2 + (timeRounded - 2) * 2.3;
             }
             break;
 
@@ -90,25 +105,30 @@ double timeCharge(char vehicleType, int timeRounded) {
             return 0;
     }
 }
-
-void displayParkingCharge(char vehicleType, int enterHr, int enterMin, int exitHr, int exitMin, int parkingHr, int parkingMin, int timeRounded, double total) {
+    //  This function determines what vehicle type is being inputted by the user and prints the output.
+void displayParkingCharge(char vehicleType, int enterHr, int enterMin, int exitHr, int exitMin, int parkingHr, int parkingMin, int timeRounded, double total)
+{
     printf("PARKING LOT CHARGE\n");
     printf("Type of vehicle: ");
-
+        // Function switch case to determine what vehicle type did the user inputted
     switch (vehicleType)
     {
         case 'C':
+        case 'c':
             printf("Car\n");
             break;
         case 'B':
+        case 'b':
             printf("Bus\n");
             break;
         case 'T':
+        case 't':
             printf("Truck\n");
             break;
         default:
             printf("Unknown\n");
     }
+        //  Prints the receipt.
     printf("\t\tPARKING LOT CHARGE\t\t");
     printf("\n");
     printf("The type of vehicle: %c\n", vehicleType);
