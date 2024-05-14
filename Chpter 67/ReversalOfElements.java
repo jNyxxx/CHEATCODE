@@ -1,4 +1,4 @@
-* Author: Baran, Junex Glenn A.
+/* Author: Baran, Junex Glenn A.
  * Date: May 14, 2024
  */
 public class ReversalOfElements {
