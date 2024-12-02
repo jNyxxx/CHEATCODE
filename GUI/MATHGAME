@@ -9,9 +9,10 @@ import javax.swing.*;
 
 class MathQuizGame extends JFrame implements ActionListener{
 	
+	JFrame frame = new JFrame();
 	JLabel titleLabel = new JLabel("Math Quiz Game");
-	JLabel subTitle1Label = new JLabel("===============");
-	JLabel subTitle2Label = new JLabel("===============");
+	JLabel subTitle1Label = new JLabel("------------------------------");
+	JLabel subTitle2Label = new JLabel("------------------------------");
 	JLabel questionLabel = new JLabel();
 	JLabel answerLabel = new JLabel("Answer: ");
 	JLabel gameOverLabel = new JLabel();
@@ -63,7 +64,6 @@ class MathQuizGame extends JFrame implements ActionListener{
 		add(restartButton);
 		add(exitButton);
 		
-		
 		rightCounterField.setVisible(false);
 		wrongCounterField.setVisible(false);
 		questionLabel.setVisible(false);
@@ -81,7 +81,7 @@ class MathQuizGame extends JFrame implements ActionListener{
 		gameOverLabel.setVisible(false);
 		
 		getContentPane().setBackground(Color.darkGray);
-		titleLabel.setForeground(Color.darkGray);
+		titleLabel.setForeground(Color.gray);
 		subTitle1Label.setForeground(Color.darkGray);
 		rightCounterField.setForeground(Color.blue);
 		wrongCounterField.setForeground(Color.red);
@@ -129,10 +129,11 @@ class MathQuizGame extends JFrame implements ActionListener{
 		divButton.addActionListener(this);
 		restartButton.addActionListener(this);
 		exitButton.addActionListener(this);
+
 		
 		setTitle("Math Quiz Game");
 		setIconImage(new ImageIcon("math.jpeg").getImage());
-		setSize(600,500);
+		setSize(600,530);
 		setLocation(900,100);
 		setResizable(false);
 		setVisible(true);
@@ -141,8 +142,9 @@ class MathQuizGame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == playButton) {
-			
+
 			getContentPane().setBackground(Color.gray);
+			titleLabel.setForeground(Color.darkGray);
 			playButton.setVisible(false);
 			rightCounterField.setVisible(true);
 			wrongCounterField.setVisible(true);
@@ -219,9 +221,11 @@ class MathQuizGame extends JFrame implements ActionListener{
 					restartButton.setVisible(true);
 					exitButton.setVisible(true);
 
+					titleLabel.setVisible(false);
 					rightCounterField.setVisible(false);
 					wrongCounterField.setVisible(false);
 					questionLabel.setVisible(false);
+					subTitle1Label.setVisible(false);
 					subTitle2Label.setVisible(false);
 					answerLabel.setVisible(false);
 					answerField.setVisible(false);
