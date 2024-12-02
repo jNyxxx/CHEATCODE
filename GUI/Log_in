@@ -3,108 +3,208 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
-import java.util.Random;
-
 import javax.swing.*;
 
-public class Main extends JFrame implements ActionListener {
 
-    JFrame frame = new JFrame("Log In");
-    JButton button = new JButton("Log In");
-    JButton playButton = new JButton("Start");
-    JLabel Userlb = new JLabel("Username", SwingConstants.CENTER);
-    JLabel Passwordlb = new JLabel("Password", SwingConstants.CENTER);
-    JTextField tfUser = new JTextField(10);
-    JPasswordField tfPassword = new JPasswordField(10);
-    Font mainfont = new Font("Segoe print", Font.BOLD, 25);
+
+public class Log_in implements ActionListener {
+
+    JFrame frame = new JFrame("Calculator");
+    JLabel userLabel = new JLabel("Username");
+    JLabel passwordLabel = new JLabel("Password");
+    JTextField tfUser = new JTextField(15);
+    JPasswordField tfPassword = new JPasswordField(15);
+    JCheckBox showPassword = new JCheckBox("Show password");
+    JButton loginButton = new JButton("Login");
+    JButton signUpButton = new JButton("Sign Up");
+    JButton forgotPasswordButton = new JButton("Forgot Password");
     HashMap<String, String> accounts = readFile();
 
-    public Main() {
-        
-        setLayout(new GridBagLayout());
+
+    public Log_in() {
+     
+        frame.setContentPane(new JLabel(new ImageIcon("batman5.jpg")));
+
+
+        frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
+
+        JLabel title = new JLabel("Calculator");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        title.setForeground(Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        playButton.setFont(new Font("Tahoma", Font.BOLD, 30));
-        playButton.setBackground(Color.red);
-        playButton.setForeground(Color.white);
-        add(playButton, gbc);
+        gbc.gridwidth = 2;
+        frame.add(title, gbc);
+
 
         gbc.gridy = 1;
-        Userlb.setFont(mainfont);
-        Userlb.setForeground(Color.white);
-        add(Userlb, gbc);
+        gbc.gridwidth = 1;
+        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        userLabel.setForeground(Color.WHITE);
+        frame.add(userLabel, gbc);
 
+   
+        gbc.gridx = 1;
+        frame.add(tfUser, gbc);
+
+
+        gbc.gridx = 0;
         gbc.gridy = 2;
-        add(tfUser, gbc);
+        passwordLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        passwordLabel.setForeground(Color.WHITE);
+        frame.add(passwordLabel, gbc);
 
+  
+        gbc.gridx = 1;
+        frame.add(tfPassword, gbc);
+
+
+        gbc.gridx = 1;
         gbc.gridy = 3;
-        Passwordlb.setFont(mainfont);
-        Passwordlb.setForeground(Color.white);
-        add(Passwordlb, gbc);
+        showPassword.setForeground(Color.WHITE);
+        showPassword.setOpaque(false);
+        frame.add(showPassword, gbc);
 
+
+        gbc.gridx = 0;
         gbc.gridy = 4;
-        add(tfPassword, gbc);
+        gbc.gridwidth = 2;
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        loginButton.setBackground(Color.WHITE);
+        loginButton.setForeground(Color.BLACK);
+        frame.add(loginButton, gbc);
+
 
         gbc.gridy = 5;
-        button.setBackground(Color.blue);
-        button.setForeground(Color.white);
-        add(button, gbc);
+        signUpButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        signUpButton.setBackground(Color.WHITE);
+        signUpButton.setForeground(Color.BLACK);
+        frame.add(signUpButton, gbc);
 
-        Userlb.setVisible(false);
-        tfUser.setVisible(false);
-        Passwordlb.setVisible(false);
-        tfPassword.setVisible(false);
-        button.setVisible(false);
 
-        playButton.addActionListener(this);
-        button.addActionListener(this);
+        gbc.gridy = 6;
+        forgotPasswordButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        forgotPasswordButton.setBackground(Color.WHITE);
+        forgotPasswordButton.setForeground(Color.BLACK);
+        frame.add(forgotPasswordButton, gbc);
 
-        setIconImage(new ImageIcon("image.png").getImage());
-        getContentPane().setBackground(Color.black);
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
+
+        showPassword.addActionListener(e -> {
+            if (showPassword.isSelected()) {
+                tfPassword.setEchoChar((char) 0);
+            } else {
+                tfPassword.setEchoChar('\u2022');
+            }
+        });
+        loginButton.addActionListener(this);
+        signUpButton.addActionListener(this);
+        forgotPasswordButton.addActionListener(this);
+
+
+        frame.setIconImage(new ImageIcon("image.png").getImage());
+        frame.setSize(500, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == playButton) {
-            playButton.setVisible(false);
-            Userlb.setVisible(true);
-            tfUser.setVisible(true);
-            Passwordlb.setVisible(true);
-            tfPassword.setVisible(true);
-            button.setVisible(true);
-            frame.getContentPane().setBackground(Color.darkGray);
-        } else if (e.getSource() == button) {
+        if (e.getSource() == loginButton) {
             String username = tfUser.getText();
             String password = new String(tfPassword.getPassword());
 
-            if (accounts.containsKey(username)) {
-                if (accounts.get(username).equals(password)) {
-                    JOptionPane.showMessageDialog(frame, "Login successful!");
-                    frame.dispose();
-                    new MathQuizGame2();
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Incorrect Password", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            if (accounts.containsKey(username) && accounts.get(username).equals(password)) {
+                JOptionPane.showMessageDialog(frame, "Login successful!");
+                frame.dispose(); // Close the login frame
+                new Calculator(); // Open the calculator
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else if (e.getSource() == signUpButton) {
+            signUpWindow();
+        } else if (e.getSource() == forgotPasswordButton) {
+            forgotPasswordWindow();
         }
     }
 
-    public static void main(String[] args) {
-        new Main();
+    private void signUpWindow() {
+        JFrame signUpFrame = new JFrame("Sign Up");
+        signUpFrame.setLayout(new GridLayout(4, 2, 10, 10));
+
+        JLabel userLabel = new JLabel("New Username:");
+        JTextField newUserField = new JTextField(15);
+        JLabel passLabel = new JLabel("New Password:");
+        JPasswordField newPassField = new JPasswordField(15);
+        JButton createButton = new JButton("Create Account");
+
+        signUpFrame.add(userLabel);
+        signUpFrame.add(newUserField);
+        signUpFrame.add(passLabel);
+        signUpFrame.add(newPassField);
+        signUpFrame.add(new JLabel());
+        signUpFrame.add(createButton);
+
+        createButton.addActionListener(e -> {
+            String newUser = newUserField.getText();
+            String newPass = new String(newPassField.getPassword());
+            if (!newUser.isEmpty() && !newPass.isEmpty()) {
+                accounts.put(newUser, newPass);
+                saveToFile(newUser, newPass);
+                JOptionPane.showMessageDialog(signUpFrame, "Account created successfully!");
+                signUpFrame.dispose();
+            } else {
+                JOptionPane.showMessageDialog(signUpFrame, "Fields cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        signUpFrame.setSize(300, 200);
+        signUpFrame.setLocationRelativeTo(null);
+        signUpFrame.setVisible(true);
+    }
+
+    private void forgotPasswordWindow() {
+        JFrame forgotFrame = new JFrame("Forgot Password");
+        forgotFrame.setLayout(new GridLayout(3, 2, 10, 10));
+
+        JLabel userLabel = new JLabel("Enter Username :");
+        JTextField userField = new JTextField(15);
+        JButton resetButton = new JButton("Reset Password");
+
+        forgotFrame.add(userLabel);
+        forgotFrame.add(userField);
+        forgotFrame.add(new JLabel());
+        forgotFrame.add(resetButton);
+
+        resetButton.addActionListener(e -> {
+            String user = userField.getText();
+            if (accounts.containsKey(user)) {
+                JOptionPane.showMessageDialog(forgotFrame, "Your password is: " + accounts.get(user));
+            } else {
+                JOptionPane.showMessageDialog(forgotFrame, "Account not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        forgotFrame.setSize(300, 150);
+        forgotFrame.setLocationRelativeTo(null);
+        forgotFrame.setVisible(true);
+    }
+
+    private void saveToFile(String username, String password) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Javacodes\\users.txt", true))) {
+            writer.write(username);
+            writer.newLine();
+            writer.write(password);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public HashMap<String, String> readFile() {
@@ -122,4 +222,7 @@ public class Main extends JFrame implements ActionListener {
         }
         return accounts;
     }
-}
+
+    public static void main(String[] args) {
+        new Log_in();
+    }
