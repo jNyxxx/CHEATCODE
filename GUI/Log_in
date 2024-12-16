@@ -7,8 +7,6 @@ import java.io.*;
 import java.util.HashMap;
 import javax.swing.*;
 
-
-
 public class Log_in implements ActionListener {
 
     JFrame frame = new JFrame("Calculator");
