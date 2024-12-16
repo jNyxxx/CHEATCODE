@@ -1,103 +1,226 @@
-public class Calculator {
-    
-    JFrame frame;
-    JTextField textField;
-    String operator = "";
-    double num1, num2, result;
+package GUI;
 
-    public Calculator() {
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.HashMap;
+import javax.swing.*;
 
-        frame = new JFrame("Calculator");
-        frame.setLayout(new BorderLayout());
-        frame.setSize(300, 400);
+public class Log_in implements ActionListener {
+
+    JFrame frame = new JFrame("Calculator");
+    JLabel userLabel = new JLabel("Username");
+    JLabel passwordLabel = new JLabel("Password");
+    JTextField tfUser = new JTextField(15);
+    JPasswordField tfPassword = new JPasswordField(15);
+    JCheckBox showPassword = new JCheckBox("Show password");
+    JButton loginButton = new JButton("Login");
+    JButton signUpButton = new JButton("Sign Up");
+    JButton forgotPasswordButton = new JButton("Forgot Password");
+    HashMap<String, String> accounts = readFile();
+
+
+    public Log_in() {
+     
+        frame.setContentPane(new JLabel(new ImageIcon("batman5.jpg")));
+
+
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+
+        JLabel title = new JLabel("Calculator");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        title.setForeground(Color.WHITE);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        frame.add(title, gbc);
+
+
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        userLabel.setForeground(Color.WHITE);
+        frame.add(userLabel, gbc);
+
+   
+        gbc.gridx = 1;
+        frame.add(tfUser, gbc);
+
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        passwordLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        passwordLabel.setForeground(Color.WHITE);
+        frame.add(passwordLabel, gbc);
+
+  
+        gbc.gridx = 1;
+        frame.add(tfPassword, gbc);
+
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        showPassword.setForeground(Color.WHITE);
+        showPassword.setOpaque(false);
+        frame.add(showPassword, gbc);
+
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        loginButton.setBackground(Color.WHITE);
+        loginButton.setForeground(Color.BLACK);
+        frame.add(loginButton, gbc);
+
+
+        gbc.gridy = 5;
+        signUpButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        signUpButton.setBackground(Color.WHITE);
+        signUpButton.setForeground(Color.BLACK);
+        frame.add(signUpButton, gbc);
+
+
+        gbc.gridy = 6;
+        forgotPasswordButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        forgotPasswordButton.setBackground(Color.WHITE);
+        forgotPasswordButton.setForeground(Color.BLACK);
+        frame.add(forgotPasswordButton, gbc);
+
+
+        showPassword.addActionListener(e -> {
+            if (showPassword.isSelected()) {
+                tfPassword.setEchoChar((char) 0);
+            } else {
+                tfPassword.setEchoChar('\u2022');
+            }
+        });
+        loginButton.addActionListener(this);
+        signUpButton.addActionListener(this);
+        forgotPasswordButton.addActionListener(this);
+
+
+        frame.setIconImage(new ImageIcon("image.png").getImage());
+        frame.setSize(500, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-        textField = new JTextField();
-        frame.add(textField, BorderLayout.NORTH);
-        
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 4, 10, 10)); // 5rows 4columns
-        frame.add(panel, BorderLayout.CENTER);
-
-   
-        String[] buttonLabels = {
-            "C", "←", "", "/",
-            "7", "8", "9", "X",
-            "4", "5", "6", "-",
-            "1", "2", "3", "+",
-            "%", "0", ".", "="
-        };
-        
-        for (String label : buttonLabels) {
-            JButton button = new JButton(label);
-            button.setFont(new Font("Arial", Font.PLAIN, 20));
-            button.addActionListener(new ButtonClickListener());
-            panel.add(button);
-        }
-
-   
         frame.setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loginButton) {
+            String username = tfUser.getText();
+            String password = new String(tfPassword.getPassword());
 
-    private class ButtonClickListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JButton source = (JButton) e.getSource();
-            String command = source.getText();
-
-            if (command.charAt(0) == 'C') {
-                textField.setText("");    // clear display
-            } else if (command.charAt(0) == '←') {
-                String currentText = textField.getText();
-                if (currentText.length() > 0) {
-                    textField.setText(currentText.substring(0, currentText.length() - 1)); // removes last character
-                }
-            } else if (command.charAt(0) == '=') {
-                num2 = Double.parseDouble(textField.getText());
-                switch (operator) {
-                    case "+":
-                        result = num1 + num2;
-                        break;
-                    case "-":
-                        result = num1 - num2;
-                        break;
-                    case "X":
-                        result = num1 * num2;
-                        break;
-                    case "/":
-                        if (num2 != 0) {
-                            result = num1 / num2;
-                        } else {
-                            result = 0;
-                            JOptionPane.showMessageDialog(frame, "Error: Division by Zero");
-                        }
-                        break;
-                    case "%":
-                        result = num1 % num2;
-                        break;
-                }
-
-                if (result == (int) result) {
-                    textField.setText(String.valueOf((int) result)); // output as integer (1)
-                } else {
-                    textField.setText(String.valueOf(result)); // output as decimal (.0)
-                }
-                operator = ""; // reset
-            } else if ("0123456789".contains(command)) {
-                textField.setText(textField.getText() + command); // numbers to make expression for exmple (1 + 1)
+            if (accounts.containsKey(username) && accounts.get(username).equals(password)) {
+                JOptionPane.showMessageDialog(frame, "Login successful!");
+                frame.dispose(); // Close the login frame
+                new Calculator(); // Open the calculator
             } else {
-                if (!operator.isEmpty()) {
-                    return; // to prevent multiple operators   
-                }
-                num1 = Double.parseDouble(textField.getText());
-                operator = command; // setter of the operator/s
-                textField.setText(""); // clear the text field for next number
+                JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-         }
-     }
-   }
+        } else if (e.getSource() == signUpButton) {
+            signUpWindow();
+        } else if (e.getSource() == forgotPasswordButton) {
+            forgotPasswordWindow();
+        }
+    }
+
+    private void signUpWindow() {
+        JFrame signUpFrame = new JFrame("Sign Up");
+        signUpFrame.setLayout(new GridLayout(4, 2, 10, 10));
+
+        JLabel userLabel = new JLabel("New Username:");
+        JTextField newUserField = new JTextField(15);
+        JLabel passLabel = new JLabel("New Password:");
+        JPasswordField newPassField = new JPasswordField(15);
+        JButton createButton = new JButton("Create Account");
+
+        signUpFrame.add(userLabel);
+        signUpFrame.add(newUserField);
+        signUpFrame.add(passLabel);
+        signUpFrame.add(newPassField);
+        signUpFrame.add(new JLabel());
+        signUpFrame.add(createButton);
+
+        createButton.addActionListener(e -> {
+            String newUser = newUserField.getText();
+            String newPass = new String(newPassField.getPassword());
+            if (!newUser.isEmpty() && !newPass.isEmpty()) {
+                accounts.put(newUser, newPass);
+                saveToFile(newUser, newPass);
+                JOptionPane.showMessageDialog(signUpFrame, "Account created successfully!");
+                signUpFrame.dispose();
+            } else {
+                JOptionPane.showMessageDialog(signUpFrame, "Fields cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        signUpFrame.setSize(300, 200);
+        signUpFrame.setLocationRelativeTo(null);
+        signUpFrame.setVisible(true);
+    }
+
+    private void forgotPasswordWindow() {
+        JFrame forgotFrame = new JFrame("Forgot Password");
+        forgotFrame.setLayout(new GridLayout(3, 2, 10, 10));
+
+        JLabel userLabel = new JLabel("Enter Username :");
+        JTextField userField = new JTextField(15);
+        JButton resetButton = new JButton("Reset Password");
+
+        forgotFrame.add(userLabel);
+        forgotFrame.add(userField);
+        forgotFrame.add(new JLabel());
+        forgotFrame.add(resetButton);
+
+        resetButton.addActionListener(e -> {
+            String user = userField.getText();
+            if (accounts.containsKey(user)) {
+                JOptionPane.showMessageDialog(forgotFrame, "Your password is: " + accounts.get(user));
+            } else {
+                JOptionPane.showMessageDialog(forgotFrame, "Account not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        forgotFrame.setSize(300, 150);
+        forgotFrame.setLocationRelativeTo(null);
+        forgotFrame.setVisible(true);
+    }
+
+    private void saveToFile(String username, String password) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Javacodes\\users.txt", true))) {
+            writer.write(username);
+            writer.newLine();
+            writer.write(password);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public HashMap<String, String> readFile() {
+        HashMap<String, String> accounts = new HashMap<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Javacodes\\users.txt"))) {
+            String user;
+            while ((user = br.readLine()) != null) {
+                String pass = br.readLine();
+                if (pass != null) {
+                    accounts.put(user, pass);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+
+    public static void main(String[] args) {
+        new Log_in();
+    }
