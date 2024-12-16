@@ -142,7 +142,7 @@ class MathQuizGame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == playButton) {
-
+			JOptionPane.showMessageDialog(this, "Game Starting...");
 			getContentPane().setBackground(Color.gray);
 			titleLabel.setForeground(Color.darkGray);
 			playButton.setVisible(false);
@@ -200,44 +200,45 @@ class MathQuizGame extends JFrame implements ActionListener{
 		}
 		
 		if(e.getSource() == answerField) {
-			int userAnswer = Integer.parseInt(answerField.getText());
-			if(userAnswer == correctAnswer) {
-				remarksField.setForeground(Color.blue);
-				remarksField.setText(getCorrectResponse());
-				answerField.setText("");
-				rightCounterField.setText(rightCounter + "");
-				questionLabel.setText(setQuestion(operator));
-			}
-			else {
-				remarksField.setForeground(Color.red);
-				remarksField.setText(getWrongResponse());
-				answerField.setText("");
-				wrongCounterField.setText(wrongCounter + "");
-				
-				if(wrongCounter == LIMIT) {
-					getContentPane().setBackground(Color.black);
-					gameOverLabel.setText("GAME OVER");
-					gameOverLabel.setVisible(true);
-					restartButton.setVisible(true);
-					exitButton.setVisible(true);
-
-					titleLabel.setVisible(false);
-					rightCounterField.setVisible(false);
-					wrongCounterField.setVisible(false);
-					questionLabel.setVisible(false);
-					subTitle1Label.setVisible(false);
-					subTitle2Label.setVisible(false);
-					answerLabel.setVisible(false);
-					answerField.setVisible(false);
-					answerField.setEditable(false);
-					mulButton.setVisible(false);
-					addButton.setVisible(false);
-					subButton.setVisible(false);
-					divButton.setVisible(false);
-					remarksField.setVisible(false);
-					answerField.setVisible(false);
-					answerField.setEditable(false);
+			try {
+				int userAnswer = Integer.parseInt(answerField.getText().trim());
+				if(userAnswer == correctAnswer) {
+					remarksField.setForeground(Color.blue);
+					remarksField.setText(getCorrectResponse());
+					rightCounter++;
+					rightCounterField.setText(String.valueOf(rightCounter));
+					questionLabel.setText(setQuestion(operator));
+					answerField.setText(""); // Clear the answer field
+				} else {
+					remarksField.setForeground(Color.red);
+					remarksField.setText(getWrongResponse());
+					wrongCounter++;
+					wrongCounterField.setText(String.valueOf(wrongCounter));
+					
+					if(wrongCounter == LIMIT) {
+						getContentPane().setBackground(Color.black);
+						gameOverLabel.setText("GAME OVER");
+						gameOverLabel.setVisible(true);
+						restartButton.setVisible(true);
+						exitButton.setVisible(true);
+						
+						titleLabel.setVisible(false);
+						rightCounterField.setVisible(false);
+						wrongCounterField.setVisible(false);
+						questionLabel.setVisible(false);
+						subTitle1Label.setVisible(false);
+						subTitle2Label.setVisible(false);
+						answerLabel.setVisible(false);
+						answerField.setVisible(false);
+						mulButton.setVisible(false);
+						addButton.setVisible(false);
+						subButton.setVisible(false);
+						divButton.setVisible(false);
+						remarksField.setVisible(false);
+					}
 				}
+			} catch (NumberFormatException ex) {
+				remarksField.setText("Invalid input. Please enter a number.");
 			}
 		}
 	}
@@ -300,4 +301,3 @@ class MathQuizGame extends JFrame implements ActionListener{
         new MathQuizGame();
     }
 }
-
