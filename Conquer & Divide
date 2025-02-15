@@ -14,7 +14,6 @@ public class DivideConquer {
 
     static void MergeSort(int[] array, int left, int right) {
         if (left < right) {
-           a
             int mid = left + (right - left) / 2; // added "left +" to calculate the mid point of the array. and changed the "left - right" to "right to left" to prevent stack overflow
             
             // Divide step
